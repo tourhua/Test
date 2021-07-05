@@ -1,5 +1,8 @@
-name: Continuous integration
-on: push
+name: CI
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ master ]
 jobs:
   checkstyle:
     name: Checkstyle
@@ -14,4 +17,4 @@ jobs:
       - name: checkstyle
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: java -jar checkstyle.jar -c checkstyle-config.xml -f xml src
+        run: java -jar checkstyle.jar -c checkstyle-config.xml -f xml src | reviewdog -f=checkstyle -name="Checkstyle" -reporter=github-check
